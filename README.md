@@ -11,6 +11,15 @@ A web server is just a computer that serves data over a network, typically the I
 
 ## Setup
 
+Create a `.env` file with the setted values for variables
+- PORT
+- FILEPATH
+- DB_URL
+- PLATFORM (=dev)
+- JWT_SECRET
+- POLKA_KEY
+
+
 Run the command
 `go build -o server && ./server`
 
