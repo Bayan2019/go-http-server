@@ -9,6 +9,11 @@ A web server is just a computer that serves data over a network, typically the I
 * Implement a secure authentication/authorization system with well-tested cryptography libraries
 * Build and understand webhooks and API keys
 
+## Setup
+
+Run the command
+`go build -o server && ./server`
+
 ## Chirpy
 
 Chirpy is a social network similar to Twitter.
