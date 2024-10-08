@@ -12,15 +12,19 @@ A web server is just a computer that serves data over a network, typically the I
 ## Setup
 
 Create a `.env` file with the setted values for variables
-- PORT
-- FILEPATH
+- PORT (probably 8080)
+- FILEPATH ((in our case a dot: . which indicates the current directory) )
 - DB_URL
 - PLATFORM (=dev)
 - JWT_SECRET
 - POLKA_KEY
 
+1. `cd` into the sql/schema directory and run: \
+`goose postgres <connection_string> up`\
+`<connection_string>` can be DB_URL
 
-Run the command
+
+2. Run the command \
 `go build -o server && ./server`
 
 ## Chirpy
