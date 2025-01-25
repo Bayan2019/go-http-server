@@ -46,7 +46,7 @@ func CheckPasswordHash(password, hash string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }
 
-// 6. Authentication / 1. Authentication with JWTs
+// 6. Authentication / 6. JWTs
 // Add a MakeJWT function to your auth package:
 // MakeJWT -
 func MakeJWT(
@@ -56,22 +56,24 @@ func MakeJWT(
 ) (string, error) {
 	signingKey := []byte(tokenSecret)
 	// Use jwt.NewWithClaims to create a new token
-	// Use jwt.SigningMethodHS256 as the signing method.
-	// Use jwt.RegisteredClaims as the claims
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
-		Issuer: string(TokenTypeAccess),
-		// Set IssuedAt to the current time in UTC
-		IssuedAt: jwt.NewNumericDate(time.Now().UTC()),
-		// Set ExpiresAt to the current time plus the expiration time (expiresIn)
-		ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(expiresIn)),
-		// Set the Subject to a stringified version of the user's id
-		Subject: userID.String(),
-	})
+	token := jwt.NewWithClaims(
+		// Use jwt.SigningMethodHS256 as the signing method.
+		jwt.SigningMethodHS256,
+		// Use jwt.RegisteredClaims as the claims
+		jwt.RegisteredClaims{
+			Issuer: string(TokenTypeAccess),
+			// Set IssuedAt to the current time in UTC
+			IssuedAt: jwt.NewNumericDate(time.Now().UTC()),
+			// Set ExpiresAt to the current time plus the expiration time (expiresIn)
+			ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(expiresIn)),
+			// Set the Subject to a stringified version of the user's id
+			Subject: userID.String(),
+		})
 	// Use token.SignedString to sign the token with the secret key.
 	return token.SignedString(signingKey)
 }
 
-// 6. Authentication / 1. Authentication with JWTs
+// 6. Authentication / 6. JWTs
 // Add a ValidateJWT function to your auth package:
 // ValidateJWT -
 func ValidateJWT(tokenString, tokenSecret string) (uuid.UUID, error) {
@@ -86,11 +88,13 @@ func ValidateJWT(tokenString, tokenSecret string) (uuid.UUID, error) {
 	)
 	if err != nil {
 		// An error will be returned if the token is invalid or has expired.
-		// If the token is invalid, return a 401 Unauthorized response from your handler.
+		// If the token is invalid,
+		// return a 401 Unauthorized response from your handler.
 		return uuid.Nil, err
 	}
 
-	// If all is well with the token, use the token.Claims interface
+	// If all is well with the token,
+	// use the token.Claims interface
 	// to get access to the user's id from the claims
 	// (which should be stored in the Subject field).
 	userIDString, err := token.Claims.GetSubject()
