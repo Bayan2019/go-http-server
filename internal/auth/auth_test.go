@@ -63,6 +63,7 @@ func TestCheckPasswordHash(t *testing.T) {
 	}
 }
 
+// 6. Authentication / 6. JWTs
 func TestValidateJWT(t *testing.T) {
 	userID := uuid.New()
 	validToken, _ := MakeJWT(userID, "secret", time.Hour)
@@ -111,6 +112,7 @@ func TestValidateJWT(t *testing.T) {
 	}
 }
 
+// 6. Authentication / 7. Authentication With JWTs
 func TestGetBearerToken(t *testing.T) {
 	tests := []struct {
 		name      string
