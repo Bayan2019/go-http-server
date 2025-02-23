@@ -84,7 +84,9 @@ func ValidateJWT(tokenString, tokenSecret string) (uuid.UUID, error) {
 	token, err := jwt.ParseWithClaims(
 		tokenString,
 		&claimsStruct,
-		func(token *jwt.Token) (interface{}, error) { return []byte(tokenSecret), nil },
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(tokenSecret), nil
+		},
 	)
 	if err != nil {
 		// An error will be returned if the token is invalid or has expired.
@@ -122,7 +124,8 @@ func ValidateJWT(tokenString, tokenSecret string) (uuid.UUID, error) {
 // Add a GetBearerToken function to your auth package
 // GetBearerToken -
 func GetBearerToken(headers http.Header) (string, error) {
-	// Auth information will come into our server in the Authorization header.
+	// Auth information will come into our server
+	// in the Authorization header.
 	authHeader := headers.Get("Authorization")
 	if authHeader == "" {
 		// If the header doesn't exist, return an error.
@@ -139,10 +142,12 @@ func GetBearerToken(headers http.Header) (string, error) {
 }
 
 // 6. Authentication / 11. Refresh Tokens
-// Add a func MakeRefreshToken() (string, error) function to your internal/auth package.
+// Add a func MakeRefreshToken() (string, error)
+// function to your internal/auth package.
 func MakeRefreshToken() (string, error) {
 	token := make([]byte, 32)
-	// It should use the following to generate a random 256-bit (32-byte) hex-encoded string:
+	// It should use the following to generate
+	// a random 256-bit (32-byte) hex-encoded string:
 	// rand.Read to generate 32 bytes (256 bits)
 	// of random data from the crypto/rand package
 	_, err := rand.Read(token)
@@ -155,14 +160,16 @@ func MakeRefreshToken() (string, error) {
 }
 
 // 8. Webhooks / 4. API Keys
-// Add a func GetAPIKey(headers http.Header) (string, error) to your auth package.
+// Add a func GetAPIKey(headers http.Header) (string, error)
+// to your auth package.
 func GetAPIKey(headers http.Header) (string, error) {
 	//  It should extract the api key from the Authorization header
 	authHeader := headers.Get("Authorization")
 	if authHeader == "" {
 		return "", ErrNoAuthHeaderIncluded
 	}
-	// You'll need to strip out the ApiKey part and the whitespace and return just the key.
+	// You'll need to strip out the ApiKey part
+	// and the whitespace and return just the key.
 	splitAuth := strings.Split(authHeader, " ")
 	if len(splitAuth) < 2 || splitAuth[0] != "ApiKey" {
 		return "", errors.New("malformed authorization header")
